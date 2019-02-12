@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>POST</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha384-PmY9l28YgO4JwMKbTvgaS7XNZJ30MK9FAZjjzXtlqyZCqBY6X6bXIkM++IkyinN+" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+
+        <div class="contianer">
+
+
+          <div class="container-fluid">
+
+            <ul class="nav navbar-nav">
+              <a class="navbar-brand bigbrand" href="#">Ad management</a>
+
+              <li><a href="#">About</a></li>
+              <li><a href="https://www.github.com">Github</a></li>
+              <li><a href="https://www.linkedin.com">LinkedIn</a></li>
+            </ul>
+              <!--put here if user authenticated  -->
+            <ul class= 'nav navbar-nav navbar-right'>
+              <li> <a href="{% url 'post_detail' %}">New Post</a></li>
+              <li> <a href="#">Post List</a></li>
+              <li> <a href="#">logout</a></li>
+
+            </ul>
+
+          </div>
+        </div>
+    </nav>
+
+        {% block content %}
+
+        {% endblock %}
+
+
+
+  </body>
+</html>
