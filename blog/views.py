@@ -4,21 +4,7 @@ from django.views.generic.edit import FormView
 from blog.forms import PostForm
 from django.utils import timezone
 
-<<<<<<< HEAD
-from django.views.generic import TemplateView, DetailView,CreateView
-
-class CreateView(CreateView):
-    template_name = 'blog/form_detail.html'
-=======
-from django.views.generic import TemplateView, DetailView,CreateView,ListView
-# Create your views here.
-# class AboutView(TemplateView):
-#     template_name = 'blog/index.html'
-#
-#
-# class PostFormView(FormView):
-#      template_name = 'blog/form_detail.html'
->>>>>>> 971bfb9dcfc1d3ad44a2d3a24d902925c93a5008
+from django.views.generic import TemplateView, DetailView, CreateView, ListView, UpdateView
 
 def index(request):
     return render(request,'blog/index.html')
@@ -26,6 +12,13 @@ def index(request):
 class CreateView(CreateView):
     template_name = 'blog/form_detail.html'
     form_class = PostForm
+
+class PostUpdateView(UpdateView):
+      template_name = 'blog/form_update.html'
+      model = Post
+      form_class = PostForm
+      exclude =  ['rev1_status', 'rev2_status', 'rev3_status']
+      success_url = '/'
 
 class login_page(TemplateView):
     template_name='blog/signin.html'
