@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% block content %}
 
-  <form method="post" action="{% url 'blog:post_detail' %}">
+  <form method="post" action="{% url 'blog:post_view' %}">
     {% csrf_token %}
     {{ form.as_p }}
 

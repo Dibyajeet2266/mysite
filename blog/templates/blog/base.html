@@ -1,32 +1,22 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <title>POST</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha384-PmY9l28YgO4JwMKbTvgaS7XNZJ30MK9FAZjjzXtlqyZCqBY6X6bXIkM++IkyinN+" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
   <nav class="navbar navbar-default">
 
     <div class="container">
-<!--
-            <ul>
-              <li><a href="{% url 'blog:about' %}">About</a></li>
-              <li><a href="https://www.github.com">Github</a></li>
-              <li><a href="https://www.linkedin.com">LinkedIn</a></li>
-            </ul>
-              <!--put here if user authenticated  -->
-            <!-- <ul class= 'nav navbar-nav navbar-right'>
-              <li> <a href="{% url 'blog:post_detail' %}">New Post</a></li>
-              <li> <a href="#">Post List</a></li>
-              <li> <a href="{% url 'login_page' %}">login</a></li> -->
+
       <div class="container-fluid">
-
-
         <ul class="nav navbar-nav">
-          <a class="navbar-brand bigbrand" href="#">Ad management</a>
+          <a class="navbar-brand bigbrand" href="{% url 'blog:post_list' %}">Ad management</a>
 
           <li><a href="{% url 'blog:about' %}">About</a></li>
           <li><a href="https://www.github.com">Github</a></li>
@@ -34,8 +24,8 @@
         </ul>
         <!--put here if user authenticated  -->
         <ul class='nav navbar-nav navbar-right'>
-          <li> <a href="{% url 'blog:post_detail' %}">New Post</a></li>
-          <li> <a href="#">Post List</a></li>
+          <li> <a href="{% url 'blog:post_view' %}">New Post</a></li>
+
           <li> <a href="{% url 'login_page' %}">login</a></li>
 
         </ul>

@@ -5,7 +5,8 @@ from blog import views
 app_name ='blog'
 
 urlpatterns = [
-    path('',views.index,name='index'),
-    path('post/',views.CreateView.as_view(),name='post_detail'),
+    path('',views.PostListView.as_view(),name='post_list'),
+    path('new/',views.CreateView.as_view(),name='post_view'),
     path('about/',views.AboutView.as_view(),name='about'),
+    path('post/<int:pk>/',views.PostDetailView.as_view(),name='post_detail'),
 ]
