@@ -18,8 +18,8 @@ from django.urls import path,include
 from blog import urls
 from blog import views
 urlpatterns = [
-    path('blog/',include('blog.urls')),
+    path('',include('blog.urls')),
     path('admin/', admin.site.urls),
-    path('login/',views.login_page,name='login_page'),
-    # path('',views.PostFormView.as_view(),name='post_detail'),
+    path('login/',views.login_page.as_view(),name='login_page'),
+    #,
 ]

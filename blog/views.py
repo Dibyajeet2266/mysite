@@ -19,8 +19,8 @@ class PostView(FormView):
     template_name = 'blog/form_detail.html'
     form_class = PostForm
 
-def login_page(request):
-    return render(request,'blog/signin.html')
+class login_page(TemplateView):
+    template_name='blog/signin.html'
 
 class AboutView(TemplateView):
     template_name = 'blog/about.html'
