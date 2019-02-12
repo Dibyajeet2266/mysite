@@ -22,9 +22,9 @@
             </ul>
               <!--put here if user authenticated  -->
             <ul class= 'nav navbar-nav navbar-right'>
-              <li> <a href="{% url 'post_detail' %}">New Post</a></li>
+              <li> <a href="{% url 'blog:post_detail' %}">New Post</a></li>
               <li> <a href="#">Post List</a></li>
-              <li> <a href="#">logout</a></li>
+              <li> <a href="{% url 'login_page' %}">login</a></li>
 
             </ul>
 
