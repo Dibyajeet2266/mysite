@@ -3,7 +3,7 @@ from blog.models import Post
 from django.views.generic.edit import FormView
 from blog.forms import PostForm
 
-from django.views.generic import TemplateView,DetailView
+from django.views.generic import TemplateView, DetailView
 # Create your views here.
 # class AboutView(TemplateView):
 #     template_name = 'blog/index.html'
