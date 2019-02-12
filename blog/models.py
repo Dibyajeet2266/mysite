@@ -14,7 +14,10 @@ class Post(models.Model):
     end_date_pic =   models.ImageField(blank=True,null=True)
 
     def get_absolute_url(self):
-         return reverse('post_list')
+         return reverse('blog:post_detail')
 
     def __str__(self):
-        return self.text
+        return self.title
+
+# class Comment(models.Model):
+#     title = models.ForeignKey('')
