@@ -6,6 +6,7 @@ import datetime
 
 # Create your models here.
 class Post(models.Model):
+    
     title  = models.CharField(max_length=256)
     start_date  = models.DateField(default = datetime.date.today())
     end_date = models.DateField(default = datetime.date.today())
