@@ -130,3 +130,8 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = "blog:post_list"
 LOGOUT_REDIRECT_URL = "blog:post_list"
+
+# AUTHENTICATION_BACKENDS = (
+#     'blog.backends.EmailOrUsernameModelBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
