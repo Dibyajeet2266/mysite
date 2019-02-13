@@ -24,10 +24,13 @@
         </ul>
         <!--put here if user authenticated  -->
         <ul class='nav navbar-nav navbar-right'>
+          {% if user.is_authenticated %}
           <li> <a href="{% url 'blog:post_view' %}">New Post</a></li>
-
-          <li> <a href="{% url 'login_page' %}">login</a></li>
-
+          <li><a href="{% url 'blog:logout' %}" >Log out</a></li>
+          {% else %}
+          <li> <a href="{% url 'login' %}">login</a></li>
+          <li> <a href="{% url 'blog:signup' %}">SignUp</a></li>
+          {% endif %}
         </ul>
 
       </div>

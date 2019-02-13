@@ -3,12 +3,25 @@ from blog.models import Post
 from django import forms
 from django.core.exceptions import ValidationError
 import datetime
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
+
+
+class UserCreateForm(UserCreationForm):
+    class Meta:
+        fields = {'username','password1','password2'}
+        model = get_user_model()
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields['username'].label = 'Display Name'
+
 
 class PostForm(ModelForm):
-    
+
     class Meta:
         model = Post
-        exclude = ['rev1_status', 'rev2_status', 'rev3_status']
+        exclude = ['rev1_status', 'rev2_status', 'rev3_status','status']
 
     def clean(self):
         print(self.cleaned_data)
@@ -18,7 +31,6 @@ class PostForm(ModelForm):
             raise forms.ValidationError("End date and Start Date must be after Todays date")
         if start_date > end_date:
             raise forms.ValidationError("End Date must be after the Start date")
-
         amount_per_day = self.cleaned_data['amount_per_day']
         amount_per_month = self.cleaned_data['amount_per_month']
         if amount_per_day < 0 or amount_per_month < 0:

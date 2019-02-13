@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% block content %}
 
-<div class="container">
+<div class="jumbotron">
 
   <h2>{{object.title}}</h2>
       <ul>
@@ -9,6 +9,7 @@
         <li>{{object.end_date}}</li>
         <li>{{object.amount_per_day}}</li>
         <li>{{object.amount_per_month}}</li>
+        <li>{{object.status }}</li>
         <li><img src="{{object.start_date_pic}}" alt="start_date"></li>
         <li><img src="{{object.end_date_pic}}" alt="end_date"></li>
       </ul>

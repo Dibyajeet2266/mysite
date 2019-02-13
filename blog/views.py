@@ -2,8 +2,9 @@ from django.shortcuts import render,get_object_or_404
 from blog.models import Post
 from django.views.generic.edit import FormView
 from blog.forms import PostForm
+from . import forms
 from django.utils import timezone
-
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView,CreateView,ListView
 # Create your views here.
 # class AboutView(TemplateView):
@@ -12,6 +13,12 @@ from django.views.generic import TemplateView, DetailView,CreateView,ListView
 #
 # class PostFormView(FormView):
 #      template_name = 'blog/form_detail.html'
+class SignUp(CreateView):
+    form_class = forms.UserCreateForm
+    success_url = reverse_lazy('login')
+    template_name = 'blog/signup.html'
+
+
 
 def index(request):
     return render(request,'blog/index.html')
