@@ -1,29 +1,17 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from blog.models import Post
 from django.views.generic.edit import FormView
 from blog.forms import PostForm
 from . import forms
 from django.utils import timezone
-<<<<<<< HEAD
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView,CreateView,ListView
-# Create your views here.
-# class AboutView(TemplateView):
-#     template_name = 'blog/index.html'
-#
-#
-# class PostFormView(FormView):
-#      template_name = 'blog/form_detail.html'
+from django.views.generic import TemplateView, DetailView, CreateView, ListView, UpdateView
+
+
 class SignUp(CreateView):
     form_class = forms.UserCreateForm
     success_url = reverse_lazy('login')
     template_name = 'blog/signup.html'
-
-
-=======
-
-from django.views.generic import TemplateView, DetailView, CreateView, ListView, UpdateView
->>>>>>> 428e05ae3007acfed02d9bfe4f970b0669c7e784
 
 def index(request):
     return render(request,'blog/index.html')
@@ -33,11 +21,11 @@ class CreateView(CreateView):
     form_class = PostForm
 
 class PostUpdateView(UpdateView):
-      template_name = 'blog/form_update.html'
-      model = Post
-      form_class = PostForm
-      exclude =  ['rev1_status', 'rev2_status', 'rev3_status']
-      success_url = '/'
+    template_name = 'blog/form_update.html'
+    model = Post
+    form_class = PostForm
+    exclude =  ['rev1_status', 'rev2_status', 'rev3_status']
+    success_url = '/'
 
 class login_page(TemplateView):
     template_name='blog/signin.html'
@@ -55,3 +43,29 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     template_name = 'blog/post_detail.html'
     queryset = Post.objects.all()
+    """
+    Accept and reject buttons required depending upon the authorization
+    if authorized:
+        if reviewers:
+            show buttons
+        else:
+            dont show buttons
+    """
+
+class PostReviewerListView(ListView):
+    """
+        Returns the pending Post for each reviewer
+    """
+    template_name = 'blog/-------'
+    model  = Post
+
+    # def get_queryset(self):
+    #     """
+    #     Gets the id of the reviewer and returns the pending ads
+    #     """
+    #     if reviewer 1 :
+    #         return Post.objects.filter(rev1_status__exact=0).order_by('start_date')
+    #     elif reviewer 2:
+    #         return Post.objects.filter(rev2_status__exact=0).order_by('start_date')
+    #     else:
+    #         return Post.objects.filter(rev3_status__exact=0).order_by('start_date')
