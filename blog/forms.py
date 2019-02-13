@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from blog.models import Post
+from blog.models import Post,Comment
 from django import forms
 from django.core.exceptions import ValidationError
 import datetime
@@ -9,13 +9,13 @@ from django.contrib.auth.forms import UserCreationForm
 
 class UserCreateForm(UserCreationForm):
     class Meta:
-        fields = {'username','password1','password2'}
+        fields = {'username','email','password1','password2'}
         model = get_user_model()
-
+        
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.fields['username'].label = 'Display Name'
-
+        self.fields['email'].label = 'Email'
+        self.fields['username'].label ='Username'
 
 class PostForm(ModelForm):
 
@@ -35,3 +35,9 @@ class PostForm(ModelForm):
         amount_per_month = self.cleaned_data['amount_per_month']
         if amount_per_day < 0 or amount_per_month < 0:
             raise forms.ValidationError("Amount Cannot be negative")
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = {'author','text'}

@@ -3,16 +3,16 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib import auth
 import datetime
-
+from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import ModelBackend
 # Create your models here.
+
+
+
 class User(auth.models.User,auth.models.PermissionsMixin):
 
-    def __str__(self):
-        return "@{}".format(self.username)
-
-
-
-
+     def __str__(self):
+         return "@{}".format(self.username)
 
 class Post(models.Model):
 
@@ -26,7 +26,6 @@ class Post(models.Model):
     rev1_status = models.IntegerField(default = 0)
     rev2_status = models.IntegerField(default = 0)
     rev3_status = models.IntegerField(default = 0)
-##########################################################################
     status = models.BooleanField(default=False)
 
     def get_absolute_url(self):
@@ -34,3 +33,13 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def approve(self):
+        self.status =True
+        self.save()
+
+class Comment(models.Model):
+    post = models.ForeignKey('blog.Post',on_delete=models.CASCADE,related_name='comments')
+    author = models.CharField(max_length=256)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)

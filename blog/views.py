@@ -1,12 +1,11 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from blog.models import Post
 from django.views.generic.edit import FormView
-from blog.forms import PostForm
+from blog.forms import PostForm,CommentForm,UserCreateForm
 from . import forms
 from django.utils import timezone
-<<<<<<< HEAD
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView,CreateView,ListView
+from django.urls import reverse_lazy,reverse
+from django.views.generic import TemplateView, DetailView, CreateView, ListView, UpdateView
 # Create your views here.
 # class AboutView(TemplateView):
 #     template_name = 'blog/index.html'
@@ -19,11 +18,6 @@ class SignUp(CreateView):
     success_url = reverse_lazy('login')
     template_name = 'blog/signup.html'
 
-
-=======
-
-from django.views.generic import TemplateView, DetailView, CreateView, ListView, UpdateView
->>>>>>> 428e05ae3007acfed02d9bfe4f970b0669c7e784
 
 def index(request):
     return render(request,'blog/index.html')
@@ -41,6 +35,9 @@ class PostUpdateView(UpdateView):
 
 class login_page(TemplateView):
     template_name='blog/signin.html'
+    
+
+
 
 class AboutView(TemplateView):
     template_name = 'blog/about.html'
@@ -55,3 +52,16 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     template_name = 'blog/post_detail.html'
     queryset = Post.objects.all()
+
+def add_comment_to_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('blog:post_detail', pk=post.pk)
+    else:
+        form = CommentForm()
+    return render(request, 'blog/add_comment_to_post.html', {'form': form})
