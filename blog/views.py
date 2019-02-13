@@ -4,6 +4,7 @@ from django.views.generic.edit import FormView
 from blog.forms import PostForm
 from . import forms
 from django.utils import timezone
+<<<<<<< HEAD
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView,CreateView,ListView
 # Create your views here.
@@ -19,6 +20,10 @@ class SignUp(CreateView):
     template_name = 'blog/signup.html'
 
 
+=======
+
+from django.views.generic import TemplateView, DetailView, CreateView, ListView, UpdateView
+>>>>>>> 428e05ae3007acfed02d9bfe4f970b0669c7e784
 
 def index(request):
     return render(request,'blog/index.html')
@@ -26,6 +31,13 @@ def index(request):
 class CreateView(CreateView):
     template_name = 'blog/form_detail.html'
     form_class = PostForm
+
+class PostUpdateView(UpdateView):
+      template_name = 'blog/form_update.html'
+      model = Post
+      form_class = PostForm
+      exclude =  ['rev1_status', 'rev2_status', 'rev3_status']
+      success_url = '/'
 
 class login_page(TemplateView):
     template_name='blog/signin.html'

@@ -2,11 +2,9 @@
 {% block content %}
 
 <div class="container">
-  <form method="post" action="{% url 'blog:post_view' %}">
-
+  <form method="post" action="{% url 'blog:post_update' post.id %}">
     {% csrf_token %}
     {{ form.as_p }}
-
     <input type="submit" value="submit">
   </form>
 </div>

@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.contrib import auth
 import datetime
 
-
 # Create your models here.
 class User(auth.models.User,auth.models.PermissionsMixin):
 
