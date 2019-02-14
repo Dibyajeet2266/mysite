@@ -14,6 +14,10 @@ urlpatterns = [
     path('about/',views.AboutView.as_view(),name='about'),
     path('post/<int:pk>/',views.PostDetailView.as_view(),name='post_detail'),
     path('post/<int:pk>/update/', views.PostUpdateView.as_view(), name = 'post_update'),
-    path('ppost/<int:pk>/comment/',views.add_comment_to_post,name='add_comment_to_post'),
+    path('post/<int:pk>/comment/',views.add_comment_to_post,name='add_comment_to_post'),
+    path('dashboard/',views.PostReviewerListView.as_view(), name = 'dashboard'),
+    path('post/<int:pk>/<str:email>/accept', views.AcceptView.as_view(), name = 'accept'),
+    path('post/<int:pk>/<str:email>/reject/', views.RejectView.as_view(), name = 'reject'),
+    path('post/rejected',views.PostRejectedListView.as_view(), name = 'rejected_post'),
 
 ]
