@@ -24,7 +24,7 @@
           <li><a href="https://www.github.com">Github</a></li>
           <li><a href="https://www.linkedin.com">LinkedIn</a></li>
         </ul>
-        <!--put here if user authenticated  -->
+
         <ul class='nav navbar-nav navbar-right'>
           {% if user.is_authenticated %}
           <li> <a href="{% url 'blog:post_list' %}"><span class="glyphicon glyphicon-user"></span></a></li>
@@ -32,7 +32,13 @@
 
           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Welcome {{user.username}} <span class="caret"></span></a>
         <ul class="dropdown-menu">
+          {% if user.is_staff %}
           <li> <a href="{% url 'blog:post_view' %}">New Post</a></li>
+          <li> <a href="{% url 'blog:rejected_post' %}">Rejected Posts</a> </li>
+
+          {% else %}
+          <li> <a href="{% url 'blog:dashboard' %}">Dashboard</a> </li>
+          {% endif %}
           <li><a href="{% url 'blog:logout' %}" >Log out</a></li>
         </ul>
       </li>
@@ -50,12 +56,12 @@
 
 
 
-    <div class="jumbotron">
-      <div class="container">
-        <h2>Ad Management System</h2>
-      </div>
-
+  <div class="jumbotron">
+    <div class="container">
+      <h2>Ad Management System</h2>
     </div>
+
+  </div>
 
   {% block content %}
 

@@ -13,6 +13,8 @@
         <li><img src="{{object.start_date_pic}}" alt="start_date"></li>
         <li><img src="{{object.end_date_pic}}" alt="end_date"></li>
       </ul>
+</div>
+
 
 </div>
 <a class="btn btn-default" href="{% url 'blog:add_comment_to_post' pk=post.pk %}">Add comment</a>
@@ -26,5 +28,26 @@
     <p>No comments here yet :(</p>
 {% endfor %}
 
+{% if user.is_authenticated  %}
+
+<div class="container">
+  <div class="btn-group" role="group">
+    <!-- <button type="submit"  href = "{% url 'blog:accept' object.id user.username %}" class="btn btn-default btn-success">Accept</button>
+    <button type="submit" formaction="" class="btn btn-default btn-danger">Reject</button> -->
+
+    <form action="{% url 'blog:accept' object.id user.email %}" method="post">
+      {% csrf_token %}
+      <input class="btn btn-default btn-success" type="submit" value="Accept">
+    </form>
+
+    <form action="{% url 'blog:reject' object.id user.email %}" method="post">
+      {% csrf_token %}
+      <input class="btn btn-default btn-danger" type="submit" value="Reject">
+    </form>
+
+  </div>
+</div>
+
+{% endif %}
 
 {% endblock %}

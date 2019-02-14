@@ -6,7 +6,7 @@
 {% if user.is_authenticated or post.status == True %}
 <div class="post">
   <ul>
-    <h2> <a href="{% url 'blog:post_detail' pk=post.pk %}">{{post.title}}</a></h2>
+    <h2> <a href="{% url 'blog:post_update' pk=post.pk %}">{{post.title}}</a></h2>
     <p>Published on: {{post.start_date|date:"D M Y"}}</p>
   </ul>
 {% endif %}

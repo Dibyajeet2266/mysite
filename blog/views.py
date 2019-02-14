@@ -6,48 +6,112 @@ from . import forms
 from django.utils import timezone
 from django.urls import reverse_lazy,reverse
 from django.views.generic import TemplateView, DetailView, CreateView, ListView, UpdateView
-# Create your views here.
-# class AboutView(TemplateView):
-#     template_name = 'blog/index.html'
-#
-#
-# class PostFormView(FormView):
-#      template_name = 'blog/form_detail.html'
+from django.contrib.auth.models import User
+from django.views import View
+from django.shortcuts import get_object_or_404
+
 class SignUp(CreateView):
+    """
+    Signup of People
+    """
     form_class = forms.UserCreateForm
     success_url = reverse_lazy('login')
     template_name = 'blog/signup.html'
-
 
 def index(request):
     return render(request,'blog/index.html')
 
 class CreateView(CreateView):
+    """
+    Create Form
+    Should be available to only the editor
+    """
     template_name = 'blog/form_detail.html'
     form_class = PostForm
 
 class PostUpdateView(UpdateView):
-      template_name = 'blog/form_update.html'
-      model = Post
-      form_class = PostForm
-      exclude =  ['rev1_status', 'rev2_status', 'rev3_status']
-      success_url = '/'
+    """
+    Update the Form:
+    Should be available to only the Editor
+    """
+    template_name = 'blog/form_update.html'
+    model = Post
+    form_class = PostForm
+    exclude =  ['rev1_status', 'rev2_status', 'rev3_status']
+    success_url = '/'
+
+    def get_object(self):
+        """
+        To update the review for 1,2,3 to default 0 value
+        """
+        obj = Post.objects.get(pk=self.kwargs['pk'])
+        obj.rev1_status = 0
+        obj.rev2_status = 0
+        obj.rev3_status = 0
+        return obj
 
 class AboutView(TemplateView):
+    """
+    About Page
+    """
     template_name = 'blog/about.html'
 
 class PostListView(ListView):
+    """
+    Return the list passed by all the Reviewers
+    """
     template_name ='blog/post_list.html'
     model = Post
 
     def get_queryset(self):
-        return Post.objects.filter(start_date__lte=timezone.now()).order_by('-start_date')
+        """
+        Returns a query which is is passed by Reviewer 3
+        """
+        if self.request.user.is_authenticated:
+            return Post.objects.filter(rev3_status__exact=1).order_by('start_date')
 
 class PostDetailView(DetailView):
+    """
+    Returns the Detailed view of the Posts
+    """
     template_name = 'blog/post_detail.html'
     queryset = Post.objects.all()
 
+class PostRejectedListView(ListView):
+    """
+    Returns a list rejected by the reviewers
+    """
+    template_name = 'blog/post_rejected_list.html'
+    model = Post
+
+    def get_queryset(self):
+        return Post.objects.filter(rev1_status__exact=-1) | Post.objects.filter(rev2_status__exact=-1) | Post.objects.filter(rev3_status__exact=-1)
+
+class PostReviewerListView(ListView):
+    """
+        Returns the Pending Post for each reviewer
+    """
+    template_name = 'blog/reviewer_list.html'
+    model  = Post
+
+    def get_queryset(self):
+        """
+        Gets the id of the reviewer and returns the pending ads
+        """
+        if  self.request.user.email == 'reviewer1@gmail.com' :
+            print('rev1')
+            return Post.objects.filter(rev1_status__exact=0, rev2_status__exact=0, rev3_status__exact=0).order_by('start_date')
+        elif self.request.user.email == 'reviewer2@gmail.com':
+            return Post.objects.filter(rev1_status__exact=1,rev2_status__exact=0, rev3_status__exact=0).order_by('start_date')
+        elif self.request.user.email == 'reviewer3@gmail.com':
+            return Post.objects.filter(rev1_status__exact=1, rev2_status__exact=1, rev3_status__exact=0).order_by('start_date')
+        else:
+            print("User Not found")
+
 def add_comment_to_post(request, pk):
+    """
+    Adds Comments to the Post
+    """
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         form = CommentForm(request.POST)
@@ -59,3 +123,41 @@ def add_comment_to_post(request, pk):
     else:
         form = CommentForm()
     return render(request, 'blog/add_comment_to_post.html', {'form': form})
+
+class RejectView(View):
+
+    def post(self, request, *args, **kwargs):
+        user_email = kwargs['email']
+        post_id = kwargs['pk']
+        post_found = get_object_or_404(Post, id=post_id )
+        if user_email == 'reviewer1@gmail.com' :
+            post_found.rev1_status = -1
+            post_found.save()
+        elif user_email == 'reviewer2@gmail.com' :
+            post_found.rev2_status = -1
+            post_found.save()
+        elif user_email == 'reviewer3@gmail.com' :
+            post_found.rev3_status = -1
+            post_found.save()
+        return redirect('blog:post_list')
+
+class AcceptView(View):
+
+    def post(self, request, *args, **kwargs):
+        print(args)
+        print(kwargs)
+        user_email = kwargs['email']
+        post_id = kwargs['pk']
+        post_found = get_object_or_404(Post, id=post_id )
+        if user_email == 'reviewer1@gmail.com' :
+            post_found.rev1_status = 1
+            post_found.save()
+        elif user_email == 'reviewer2@gmail.com' :
+            post_found.rev2_status = 1
+            post_found.save()
+        elif user_email == 'reviewer3@gmail.com' :
+            post_found.rev3_status = 1
+            post_found.save()
+        else:
+            print('No user')
+        return redirect('blog:post_list')

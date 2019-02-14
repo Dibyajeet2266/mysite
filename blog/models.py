@@ -60,7 +60,6 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 
 class Post(models.Model):
-
     title  = models.CharField(max_length=256)
     start_date  = models.DateField(default = datetime.date.today())
     end_date = models.DateField(default = datetime.date.today())
@@ -74,7 +73,8 @@ class Post(models.Model):
     status = models.BooleanField(default=False)
 
     def get_absolute_url(self):
-         return reverse('blog:post_list')
+        return reverse('blog:post_list')
+
 
     def __str__(self):
         return self.title
