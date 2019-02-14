@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTH_USER_MODEL = 'blog.User'
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -131,7 +131,4 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = "blog:post_list"
 LOGOUT_REDIRECT_URL = "blog:post_list"
 
-# AUTHENTICATION_BACKENDS = (
-#     'blog.backends.EmailOrUsernameModelBackend',
-#     'django.contrib.auth.backends.ModelBackend',
-# )
+# AUTH_USER_MODEL = 'blog.User'

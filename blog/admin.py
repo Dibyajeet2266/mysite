@@ -1,6 +1,21 @@
-from django.contrib import admin
 from .models import Post
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import UserChangeForm
+from .models import User
+
+
+class MyUserChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields ="__all__"
+
+class MyUserAdmin(UserAdmin):
+    form = MyUserChangeForm
+
+    fieldsets = UserAdmin.fieldsets
+
 # Register your models here.
 
-from blog.models import Post
+admin.site.register(User,MyUserAdmin)
 admin.site.register(Post)

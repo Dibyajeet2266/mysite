@@ -1,18 +1,63 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.contrib import auth
 import datetime
-from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
+from django.contrib.auth.models import PermissionsMixin
+
 # Create your models here.
 
 
+class UserManager(BaseUserManager):
 
-class User(auth.models.User,auth.models.PermissionsMixin):
+    use_in_migrations = True
 
-     def __str__(self):
-         return "@{}".format(self.username)
+    def _create_user(self,email,password,is_staff,is_superuser,**extra_fields):
+        now = timezone.now()
+        if not email:
+            raise ValueError('The given email must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email,is_staff=is_staff,is_active=True,is_superuser=is_superuser,last_login=now,date_joined=now,**extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        return self._create_user(email, password,False,False,**extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        return self._create_user(email, password,True,True,**extra_fields)
+
+
+
+class User(AbstractBaseUser,PermissionsMixin):
+    username = models.CharField(max_length=256,blank=True)
+    first_name = models.CharField(max_length=256,blank=True)
+    last_name = models.CharField(max_length=256,blank=True)
+    email = models.EmailField(blank=True, unique=True)
+    address1 = models.CharField(max_length=256,blank=True)
+    address2 = models.CharField(max_length=256,blank=True)
+    area_code = models.CharField(max_length=10,blank=True)
+    country_code = models.CharField(max_length=10,blank=True)
+
+    date_joined = models.DateTimeField(_('date_joined'),default=timezone.now())
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural =_('users')
+
+
 
 class Post(models.Model):
 

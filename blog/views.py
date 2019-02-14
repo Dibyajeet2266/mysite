@@ -33,12 +33,6 @@ class PostUpdateView(UpdateView):
       exclude =  ['rev1_status', 'rev2_status', 'rev3_status']
       success_url = '/'
 
-class login_page(TemplateView):
-    template_name='blog/signin.html'
-    
-
-
-
 class AboutView(TemplateView):
     template_name = 'blog/about.html'
 
